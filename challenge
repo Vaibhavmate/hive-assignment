@@ -1,0 +1,76 @@
+ hadoop fs -put /tmp/hive_class /sales_order_data.csv/tmp/hive_task_1
+  create table sales_order_data_csv
+    > (
+    > ORDERNUMBER int,
+    > QUANTITYORDERED int,
+    > PRICEEACH float,
+    > ORDERLINENUMBER int,
+    > SALES float,
+    > STATUS string,
+    > QTR_ID int,
+    > MONTH_ID int,
+    > YEAR_ID int,
+    > PRODUCTLINE string,
+    > MSRP int,
+    > PRODUCTCODE string,
+    > PHONE string,
+    > CITY string,
+    > STATE string,
+    > POSTALCODE string,
+    > COUNTRY string,
+    > TERRITORY string,
+    > CONTACTLASTNAME string,
+    > CONTACTFIRSTNAME string,
+    > DEALSIZE string
+    > )
+    > row format delimited
+    > fields terminated by ','
+    > tblproperties("skip.header.line.count"="1")
+    > ;
+
+ load data local inpath'file:///tmp/hive_class/sales_order_data.csv' into table sales_order_data_csv;
+ use hive_class_b1;
+OK
+Time taken: 0.042 seconds
+hive> create table sales_order_data_orc
+    > (
+    > ORDERNUMBER int,
+    > QUANTITYORDERED int,
+    > PRICEEACH float,
+    > ORDERLINENUMBER int,
+    > SALES float,
+    > STATUS string,
+    > QTR_ID int,
+    > MONTH_ID int,
+    > YEAR_ID int,
+    > PRODUCTLINE string,
+    > MSRP int,
+    > PRODUCTCODE string,
+    > PHONE string,
+    > CITY string,
+    > STATE string,
+    > POSTALCODE string,
+    > COUNTRY string,
+    > TERRITORY string,
+    > CONTACTLASTNAME string,
+    > CONTACTFIRSTNAME string,
+    > DEALSIZE string
+    > )
+    > stored as orc;
+ from sales_order_data_csv insert overwrite table sales_order_data_orc select * ;
+ 
+ 1.  select year_id, sum(sales) as total_sales from sales_order_data_orc group by year_id
+ 
+ 2. select productline, count (mskp) as nooforders  from sales_order_data_orc group by productline
+ 
+ 3. not undestand
+ 
+ 4.
+ 
+ 5. select country , count (msrp) as nooforders  from sales_order_data_orc group by country;
+
+6.
+
+7.  select year_id, month_id,sum (sales) as total_sales from sales_order_data_orc group by year_id,month_id;
+
+ 
